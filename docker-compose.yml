@@ -13,13 +13,6 @@ services:
     networks:
       - iot_network
 
-  redis:
-    image: redis:7
-    ports:
-      - "6379:6379"
-    networks:
-      - iot_network
-
   api:
     build: .
     command: uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
@@ -32,23 +25,7 @@ services:
       - .:/code
     networks:
       - iot_network
-
-  # celery_worker:
-  #   build: .
-  #   command: celery -A app.tasks.celery worker --loglevel=info
-  #   depends_on:
-  #     - redis
-  #     - postgres
-  #   volumes:
-  #     - .:/code
-
-  # mosquitto:
-  #   image: eclipse-mosquitto
-  #   ports:
-  #     - "1883:1883"
-  #   volumes:
-  #     - ./mosquitto.conf:/mosquitto/config/mosquitto.conf
-
+      
 
 volumes:
   postgres_data:
