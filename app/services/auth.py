@@ -38,7 +38,7 @@ class AuthService(BaseService):
         new_user_data = UserAdd(
             username=user_data.username, email=user_data.email, password_hash=password_hash
         )
-        new_user = await self.db.user.create(data=new_user_data)
+        new_user = await self.db.user.add(data=new_user_data)
         await self.db.commit()
         return new_user
 

@@ -1,6 +1,7 @@
 from pydantic import EmailStr
 from sqlalchemy import select
 from sqlalchemy.exc import NoResultFound
+from sqlalchemy.orm import selectinload
 
 from app.schemas.user import User
 from app.models import UserORM
@@ -11,10 +12,11 @@ from app.logger import logger
 class UserCRUD(BaseCRUD):
     model = UserORM
     schema = User
+    load_options = [selectinload(UserORM.devices)]
 
     async def get_user_by_email(self, email: EmailStr) -> User:
         logger.info("Получение пользователя по email")
-        query = select(self.model).filter_by(email=email)
+        query = select(self.model).options(*self.load_options).filter_by(email=email)
         result = await self.session.execute(query)
         try:
             model = self.schema.model_validate(result.scalars().one(), from_attributes=True)

@@ -1,8 +1,12 @@
 from pydantic import BaseModel
 
 
-class Sensor(BaseModel):
-    id: int
+class SensorAdd(BaseModel):
     name: str
     type: str
     device_id: int
+
+
+class Sensor(SensorAdd):
+    id: int
+    

@@ -35,4 +35,4 @@ def get_user_id(token: str = Depends(get_token)) -> int:
     return data.get("user_id")
 
 
-UserIDDep = Annotated[User, Depends(get_user_id)]
+UserIDDep = Annotated[int, Depends(get_user_id)]

@@ -3,7 +3,7 @@ from datetime import datetime
 
 
 class DeviceCommandAdd(BaseModel):
-    device_id: str
+    device_id: int
     command: str
 
 

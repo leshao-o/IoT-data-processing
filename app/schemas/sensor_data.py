@@ -3,8 +3,7 @@ from datetime import datetime
 
 
 class SensorDataAdd(BaseModel):
-    sensor_id: str
-    type: str
+    sensor_id: int
     value: float
 
 

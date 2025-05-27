@@ -2,9 +2,12 @@ from pydantic import BaseModel
 from datetime import datetime
 
 
-class Alert(BaseModel):
-    id: int
-    sensor_id: str
+class AlertAdd(BaseModel):
+    sensor_id: int
     alert_type: str
     description: str
+
+
+class Alert(AlertAdd):
+    id: int
     created_at: datetime

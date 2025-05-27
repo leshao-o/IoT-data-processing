@@ -1,6 +1,8 @@
 from pydantic import BaseModel, EmailStr
 from datetime import datetime
 
+from app.schemas.device import Device
+
 
 class UserAdd(BaseModel):
     username: str
@@ -11,19 +13,13 @@ class UserAdd(BaseModel):
 class User(UserAdd):
     id: int
     created_at: datetime
+    devices: list[Device]
 
 
 class UserRequestAdd(BaseModel):
     username: str
     email: EmailStr
     password: str
-
-
-class UserResponse(BaseModel):
-    id: int
-    username: str
-    email: str
-    created_at: datetime
 
 
 class UserLogin(BaseModel):

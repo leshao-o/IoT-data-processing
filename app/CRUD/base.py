@@ -8,12 +8,13 @@ from app.logger import logger
 class BaseCRUD:
     model = None
     schema: BaseModel = None
+    load_options = []
 
     def __init__(self, session):
         self.session = session
 
     # Метод для добавления данных в базу
-    async def create(self, data: BaseModel) -> BaseModel:
+    async def add(self, data: BaseModel) -> BaseModel:
         logger.info("Добавление данных в базу")
         stmt = insert(self.model).values(**data.model_dump()).returning(self.model)
         try:
@@ -22,7 +23,6 @@ class BaseCRUD:
         except IntegrityError as e:
             logger.error("Ошибка добавления данных в базу")
             raise e
-        # Валидация (приведение результата к pydantic модели) и возврат добавленной модели
         model = self.schema.model_validate(result.scalars().one(), from_attributes=True)
         return model
     
@@ -40,7 +40,7 @@ class BaseCRUD:
     # Метод для получения всех данных из таблицы
     async def get_all(self) -> list[BaseModel]:
         logger.info("Получение всех данных из таблицы")
-        query = select(self.model)
+        query = select(self.model).options(*self.load_options)
         result = await self.session.execute(query)
         models = [
             self.schema.model_validate(one, from_attributes=True)
@@ -52,7 +52,7 @@ class BaseCRUD:
     # Метод для получения данных по ID
     async def get_by_id(self, id: int) -> BaseModel:
         logger.info("Получение данных по ID")
-        query = select(self.model).filter(self.model.id == id)
+        query = select(self.model).options(*self.load_options).filter(self.model.id == id)
         result = await self.session.execute(query)
         model = self.schema.model_validate(result.scalars().one(), from_attributes=True)
         logger.info("Данные получены успешно")
@@ -61,7 +61,7 @@ class BaseCRUD:
     # Метод для получения данных по фильтру
     async def get_filtered(self, **filter_by) -> list[BaseModel]:
         logger.info("Получение данных по фильтру")
-        query = select(self.model).filter_by(**filter_by)
+        query = select(self.model).options(*self.load_options).filter_by(**filter_by)
         result = await self.session.execute(query)
         models = [
             self.schema.model_validate(one, from_attributes=True) for one in result.scalars().all()
