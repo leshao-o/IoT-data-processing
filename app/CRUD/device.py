@@ -1,6 +1,6 @@
 from app.CRUD.base import BaseCRUD
 from app.models import DeviceORM
-from app.schemas import Device
+from app.schemas.device import Device
 
 
 class DeviceCRUD(BaseCRUD):

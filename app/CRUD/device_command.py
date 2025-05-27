@@ -1,6 +1,6 @@
 from app.CRUD.base import BaseCRUD
 from app.models import DeviceCommandORM
-from app.schemas import DeviceCommand
+from app.schemas.device_command import DeviceCommand
 
 
 class DeviceCommandCRUD(BaseCRUD):

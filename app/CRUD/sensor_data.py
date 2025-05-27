@@ -1,6 +1,6 @@
 from app.CRUD.base import BaseCRUD
 from app.models import SensorDataORM
-from app.schemas import SensorData
+from app.schemas.sensor_data import SensorData
 
 
 class SensorDataCRUD(BaseCRUD):

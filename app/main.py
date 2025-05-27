@@ -6,7 +6,7 @@ import uvicorn
 
 sys.path.append(str(Path(__file__).parent.parent))
 
-from app.api import router
+from app.api.auth import router
 
 
 app = FastAPI(title="IoT Data Processing API")

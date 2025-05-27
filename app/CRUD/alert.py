@@ -1,6 +1,6 @@
 from app.CRUD.base import BaseCRUD
 from app.models import AlertORM
-from app.schemas import Alert
+from app.schemas.alert import Alert
 
 
 class AlertCRUD(BaseCRUD):
